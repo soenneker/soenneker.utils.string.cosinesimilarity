@@ -19,9 +19,6 @@ public static class CosineSimilarityStringUtil
     [Pure]
     public static double CalculateSimilarityPercentage(string s1, string s2)
     {
-        if (s1 == s2)
-            return 100;
-
         double similarity = CalculateSimilarity(s1, s2);
         double percentageMatch = similarity * 100;
 
