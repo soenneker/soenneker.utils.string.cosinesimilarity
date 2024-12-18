@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Soenneker.Tests.FixturedUnit;
 using Xunit;
-using Xunit.Abstractions;
+
 
 namespace Soenneker.Utils.String.CosineSimilarity.Tests;
 
