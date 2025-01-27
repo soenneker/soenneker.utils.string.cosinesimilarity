@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System;
 using System.Linq;
+using Soenneker.Extensions.String;
 
 namespace Soenneker.Utils.String.CosineSimilarity;
 
@@ -20,9 +21,7 @@ public static class CosineSimilarityStringUtil
     public static double CalculateSimilarityPercentage(string s1, string s2)
     {
         double similarity = CalculateSimilarity(s1, s2);
-        double percentageMatch = similarity * 100;
-
-        return percentageMatch;
+        return similarity * 100;
     }
 
     /// <summary>
@@ -81,7 +80,8 @@ public static class CosineSimilarityStringUtil
 
         foreach (string word in words)
         {
-            string key = word.ToLower();
+            string key = word.ToLowerInvariantFast();
+
             if (wordVector.TryGetValue(key, out int count))
             {
                 wordVector[key] = count + 1;
