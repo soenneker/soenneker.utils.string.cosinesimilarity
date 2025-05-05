@@ -1,4 +1,4 @@
-# Contributing to Soenneker.Utils.String.CosineSimilarity
+﻿# Contributing to Soenneker.Utils.String.CosineSimilarity
 
 We're excited that you're interested in contributing!
 
