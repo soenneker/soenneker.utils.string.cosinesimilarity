@@ -14,7 +14,7 @@
         <AssemblyName>Soenneker.Utils.String.CosineSimilarity</AssemblyName>
         <PackageId>Soenneker.Utils.String.CosineSimilarity</PackageId>
         <PackageTags>utils string cosinesimilarity cosine similarity comparison fuzzy matching tf-idf vector cosinesimilaritystringutil c# .net csharp dotnet</PackageTags>
-        <Copyright>Copyright © 2023-2025 Jake Soenneker</Copyright>
+        <Copyright>Copyright © 2023-2026 Jake Soenneker</Copyright>
         <Authors>Jake Soenneker</Authors>
         <Company>https://soenneker.com</Company>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
