@@ -1,15 +1,14 @@
 using AwesomeAssertions;
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Tests.HostedUnit;
 
 
 namespace Soenneker.Utils.String.CosineSimilarity.Tests;
 
-[Collection("Collection")]
-public class CosineSimilarityStringUtilTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public class CosineSimilarityStringUtilTests : HostedUnitTest
 {
 
-    public CosineSimilarityStringUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public CosineSimilarityStringUtilTests(Host host) : base(host)
     {
     }
 
