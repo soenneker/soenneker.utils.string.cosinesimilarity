@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System;
-using System.Linq;
-using Soenneker.Extensions.String;
 
 namespace Soenneker.Utils.String.CosineSimilarity;
 
@@ -36,21 +34,20 @@ public static class CosineSimilarityStringUtil
         if (s1 == s2)
             return 1;
 
-        string[] words1 = s1.Split();
-        string[] words2 = s2.Split();
-
-        Dictionary<string, int> vector1 = GetWordVector(words1);
-        Dictionary<string, int> vector2 = GetWordVector(words2);
-
-        IEnumerable<string> intersection = new HashSet<string>(vector1.Keys).Intersect(vector2.Keys);
+        Dictionary<string, int> vector1 = GetWordVector(s1);
+        Dictionary<string, int> vector2 = GetWordVector(s2);
 
         double dotProduct = 0;
         double magnitude1 = 0;
         double magnitude2 = 0;
 
-        foreach (string word in intersection)
+        Dictionary<string, int> smaller = vector1.Count <= vector2.Count ? vector1 : vector2;
+        Dictionary<string, int> larger = ReferenceEquals(smaller, vector1) ? vector2 : vector1;
+
+        foreach (KeyValuePair<string, int> pair in smaller)
         {
-            dotProduct += vector1[word] * vector2[word];
+            if (larger.TryGetValue(pair.Key, out int otherCount))
+                dotProduct += pair.Value * otherCount;
         }
 
         foreach (int value in vector1.Values)
@@ -74,22 +71,31 @@ public static class CosineSimilarityStringUtil
         return dotProduct / (magnitude1 * magnitude2);
     }
 
-    private static Dictionary<string, int> GetWordVector(IReadOnlyCollection<string> words)
+    private static Dictionary<string, int> GetWordVector(string value)
     {
-        var wordVector = new Dictionary<string, int>(words.Count, StringComparer.OrdinalIgnoreCase);
+        var wordVector = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        Dictionary<string, int>.AlternateLookup<ReadOnlySpan<char>> lookup = wordVector.GetAlternateLookup<ReadOnlySpan<char>>();
+        ReadOnlySpan<char> span = value;
+        var index = 0;
 
-        foreach (string word in words)
+        while (index < span.Length)
         {
-            string key = word.ToLowerInvariantFast();
+            while (index < span.Length && char.IsWhiteSpace(span[index]))
+                index++;
 
-            if (wordVector.TryGetValue(key, out int count))
-            {
-                wordVector[key] = count + 1;
-            }
+            int start = index;
+            while (index < span.Length && !char.IsWhiteSpace(span[index]))
+                index++;
+
+            if (start == index)
+                continue;
+
+            ReadOnlySpan<char> word = span[start..index];
+
+            if (lookup.TryGetValue(word, out int count))
+                lookup[word] = count + 1;
             else
-            {
-                wordVector[key] = 1;
-            }
+                wordVector.Add(word.ToString(), 1);
         }
 
         return wordVector;
