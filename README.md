@@ -9,7 +9,7 @@
 ## Installation
 
 ```
-dotnet add package Soenneker.Utils.String.CosineSimularity
+dotnet add package Soenneker.Utils.String.CosineSimilarity
 ```
 
 ## Why?
