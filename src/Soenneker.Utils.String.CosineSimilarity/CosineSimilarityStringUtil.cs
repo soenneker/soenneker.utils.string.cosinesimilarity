@@ -47,17 +47,17 @@ public static class CosineSimilarityStringUtil
         foreach (KeyValuePair<string, int> pair in smaller)
         {
             if (larger.TryGetValue(pair.Key, out int otherCount))
-                dotProduct += pair.Value * otherCount;
+                dotProduct += (double) pair.Value * otherCount;
         }
 
         foreach (int value in vector1.Values)
         {
-            magnitude1 += value * value;
+            magnitude1 += (double) value * value;
         }
 
         foreach (int value in vector2.Values)
         {
-            magnitude2 += value * value;
+            magnitude2 += (double) value * value;
         }
 
         magnitude1 = Math.Sqrt(magnitude1);

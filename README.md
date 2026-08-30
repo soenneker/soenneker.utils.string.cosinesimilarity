@@ -4,35 +4,39 @@
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.utils.string.cosinesimilarity/codeql.yml?label=CodeQL&style=for-the-badge)](https://github.com/soenneker/soenneker.utils.string.cosinesimilarity/actions/workflows/codeql.yml)
 
 # ![](https://user-images.githubusercontent.com/4441470/224455560-91ed3ee7-f510-4041-a8d2-3fc093025112.png) Soenneker.Utils.String.CosineSimilarity
-### A utility library for comparing strings via Cosine Similarity
+A whitespace-token frequency cosine similarity calculator for comparing strings.
 
 ## Installation
 
-```
+```bash
 dotnet add package Soenneker.Utils.String.CosineSimilarity
 ```
-
-## Why?
-
-Imagine you have two sentences or documents. Cosine similarity helps you figure out how similar they are by looking at the **-words-** they share. Here's why it's handy:
-
-### Easy to Understand:
-Cosine similarity is easy to understand. It's a number between 0 and 1 that represents how similar two documents are. The closer to 1, the more similar they are.
-
-### Not Bothered by Length: 
-Whether a text is long or short doesn't throw off cosine similarity. It cares more about the words and their relationships than the total number of words.
-
-### Meaning, Not Just Frequency:
-It focuses on the meaning of words, not just how often they show up. So, even if one document has a lot more words than another, they might still be considered similar if they share important terms.
-
-### Efficient for Big Tasks:
-When you're dealing with lots of documents or a ton of text, cosine similarity is efficient. It doesn't get bogged down by complicated calculations, making it a practical choice for large datasets.
 
 ## Usage
 
 ```csharp
+using Soenneker.Utils.String.CosineSimilarity;
+
 var text1 = "This is a test";
 var text2 = "This is another test";
 
-double result = CosineSimilarityStringUtil.CalculateSimilarityPercentage(text1, text2); // 75
+double score = CosineSimilarityStringUtil.CalculateSimilarity(text1, text2);
+double percentage = CosineSimilarityStringUtil.CalculateSimilarityPercentage(text1, text2);
+
+// score == 0.75
+// percentage == 75
 ```
+
+The result measures overlap between token-count vectors. `CalculateSimilarity` returns a score from `0` to `1`; `CalculateSimilarityPercentage` returns the same score multiplied by 100. Identical strings, including two empty strings, return `1` (or `100%`). If only one input is empty, the result is `0`.
+
+## Tokenization and comparison rules
+
+- Tokens are separated only by whitespace.
+- Token matching is ordinal and case-insensitive.
+- Repeated tokens increase their vector weight.
+- Punctuation is retained, so `"test"` and `"test."` are different tokens.
+- Word order is ignored.
+
+This is lexical frequency comparison, not semantic similarity. It does not stem words, remove stop words, normalize punctuation, or understand synonyms. Normalize inputs before calling it when your application needs those behaviors.
+
+The methods require non-null strings and throw when passed `null`.
