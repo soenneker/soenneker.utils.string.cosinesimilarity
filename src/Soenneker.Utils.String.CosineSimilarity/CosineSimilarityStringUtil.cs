@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System;
@@ -50,14 +51,14 @@ public static class CosineSimilarityStringUtil
                 dotProduct += (double) pair.Value * otherCount;
         }
 
-        foreach (int value in vector1.Values)
+        foreach (KeyValuePair<string, int> pair in vector1)
         {
-            magnitude1 += (double) value * value;
+            magnitude1 += (double) pair.Value * pair.Value;
         }
 
-        foreach (int value in vector2.Values)
+        foreach (KeyValuePair<string, int> pair in vector2)
         {
-            magnitude2 += (double) value * value;
+            magnitude2 += (double) pair.Value * pair.Value;
         }
 
         magnitude1 = Math.Sqrt(magnitude1);
@@ -92,10 +93,8 @@ public static class CosineSimilarityStringUtil
 
             ReadOnlySpan<char> word = span[start..index];
 
-            if (lookup.TryGetValue(word, out int count))
-                lookup[word] = count + 1;
-            else
-                wordVector.Add(word.ToString(), 1);
+            ref int count = ref CollectionsMarshal.GetValueRefOrAddDefault(lookup, word, out _);
+            count++;
         }
 
         return wordVector;
