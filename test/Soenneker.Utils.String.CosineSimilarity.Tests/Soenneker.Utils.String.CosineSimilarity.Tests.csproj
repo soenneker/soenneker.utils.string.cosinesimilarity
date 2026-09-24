@@ -25,5 +25,8 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\Soenneker.Utils.String.CosineSimilarity\Soenneker.Utils.String.CosineSimilarity.csproj" />
     </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AwesomeAssertions" Version="9.6.0" />
+    </ItemGroup>
 </Project>
 
